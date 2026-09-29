@@ -21,7 +21,7 @@ export default function BMI(){
             <Text style={styles.scoreTitle}>BMI Score</Text>
             <Text style={styles.score}>48</Text>
         </View>
-
+    {/* height input area */}
         <View style={styles.heightContainer}>
             <Text style={styles.heightTitle}>Height</Text>
             <View style ={styles.heightDimensionsContainer}>
@@ -35,6 +35,16 @@ export default function BMI(){
                 </View>    
             </View>
         </View>
+    {/* weight input area */}
+    <View style={styles.weightButtonsContainer}>
+        <View style={styles.weightContainer}>
+            <Text style={styles.weightTitle}>Weight</Text>
+            <TextInput style={styles.weightInput} keyBoardType="numeric" maxLength={3}></TextInput>
+            <Text style={styles.unitLabelWeight}>kg</Text>
+         </View>
+    </View>
+
+
     </View>
     </View>
     
@@ -134,7 +144,7 @@ const styles=StyleSheet.create({
     heightTitle:{
         fontFamily:'flute',
         fontSize:25,
-        textAlign:'center',
+        textAlign:'left',
     },
     
     heightDimensionsContainer:{
@@ -173,9 +183,46 @@ const styles=StyleSheet.create({
     },
     unitLabel:{
         position:'absolute',
-        right:40,
+        right:20,
         bottom:20,
         fontFamily:'flute',
 
-    }
+    },
+    weightButtonsContainer:{
+        width:150,
+        height:150,
+        borderRadius:10,
+        display:'flex',
+        flexDirection:'column',
+        backgroundColor:'rgb(244, 92, 92)',
+        padding:20,
+        marginTop:30,
+        borderColor:'black',
+        borderWidth:1.2,
+        alignItems:'center',
+    },
+    weightTitle:{
+        fontFamily:'flute',
+        fontSize:25,
+        textAlign:'left',
+    },
+    weightInput:{
+        backgroundColor:'rgb(255, 245, 200)',
+        fontFamily:'flute',
+        fontSize:35,
+        textAlign:'center',
+        width:120,
+        height:70,
+        backgroundColor: 'rgb(249, 255, 160)',
+        borderColor:'black',
+        borderWidth:1.2,
+        borderRadius:5,
+        paddingRight:15,
+    },
+    unitLabelWeight:{
+        position:'absolute',
+        right:20,
+        bottom:20,
+        fontFamily:'flute',
+    },
 });
