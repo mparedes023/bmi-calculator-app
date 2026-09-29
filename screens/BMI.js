@@ -1,4 +1,4 @@
-import {View, Text,StyleSheet, TextInput} from 'react-native';
+import {View, Text,StyleSheet, TextInput,TouchableOpacity} from 'react-native';
 import {useFonts} from 'expo-font';
 export default function BMI(){
     const [fontsLoaded] = useFonts({
@@ -36,14 +36,21 @@ export default function BMI(){
             </View>
         </View>
     {/* weight input area */}
+    <View style={styles.wbContainer}> 
     <View style={styles.weightButtonsContainer}>
         <View style={styles.weightContainer}>
             <Text style={styles.weightTitle}>Weight</Text>
-            <TextInput style={styles.weightInput} keyBoardType="numeric" maxLength={3}></TextInput>
+            <TextInput style={styles.weightInput} keyboardType="numeric" maxLength={3}></TextInput>
             <Text style={styles.unitLabelWeight}>kg</Text>
+
          </View>
     </View>
-
+                       
+    <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.btnCalculate} ><Text style={styles.btnCalculateText}>Calculate</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.btnReset}><Text style={styles.btnResetText}>Reset</Text></TouchableOpacity>
+    </View>
+ </View>
 
     </View>
     </View>
@@ -188,7 +195,19 @@ const styles=StyleSheet.create({
         fontFamily:'flute',
 
     },
+    wbContainer:{
+        display:'flex',
+        flexDirection:'row',
+        justifyContent:'space-between',
+        gap:28,
+    },
     weightButtonsContainer:{
+
+        display:'flex',
+        flexDirection:'row',
+
+    },
+    weightContainer:{
         width:150,
         height:150,
         borderRadius:10,
@@ -221,8 +240,45 @@ const styles=StyleSheet.create({
     },
     unitLabelWeight:{
         position:'absolute',
-        right:20,
-        bottom:20,
+        right:30,
+        bottom:40,
         fontFamily:'flute',
     },
+    buttonContainer:{
+        display:'flex',
+        flexDirection:'column',
+        marginTop:43,
+    },
+    btnCalculate:{
+        backgroundColor:'rgb(255, 245, 200)',
+       
+        width:120,
+        height:50,
+        borderColor:'black',
+        borderWidth:1.2,
+        borderRadius:5,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    btnCalculateText:{
+        fontFamily:'flute',
+        fontSize:25,
+        textAlign:'center',
+    },
+    btnReset:{
+        backgroundColor:'rgb(255, 245, 200)',
+        marginTop:20,
+        width:120,
+        height:50,
+        borderColor:'black',
+        borderWidth:1.2,
+        borderRadius:5,
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    btnResetText:{
+        fontFamily:'flute',
+        fontSize:25,
+        textAlign:'center',
+    }
 });
