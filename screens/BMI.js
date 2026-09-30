@@ -1,12 +1,59 @@
-import {View, Text,StyleSheet, TextInput,TouchableOpacity} from 'react-native';
+import {View, Text,StyleSheet, TextInput,TouchableOpacity,Alert} from 'react-native';
 import {useFonts} from 'expo-font';
+import React,{useState} from 'react';
 export default function BMI(){
+
+    // state variables for bmi, height, and weight
+    const [height,setHeight]=useState('');
+    const [weight,setWeight]=useState('');
+    const [score,setBmiScore]=useState('--');
+
     const [fontsLoaded] = useFonts({
         'flute':require('../assets/fonts/InstrumentSerif-Regular.ttf'),
     });
     if (!fontsLoaded){
         return null;
     }
+
+    // bmi calculation function
+    const calculateBMI=()=>{
+        const userWeight=parseFloat(weight);
+        const userHeight =parseFloat(height) ;
+        if (isNaN(userWeight)|| isNaN(userHeight)){
+            Alert.alert("Invalid input",`Please enter a numeric value in both weight and height fields.`);
+            return;
+        }
+
+        // i searched it up, the tallest person ever was 2.72m so 3m is an appropiate cutoff
+        if(userWeight<0||userHeight>3){
+            Alert.alert("Invalid input",`Weight must be greater than 0kg and height must be greater than 0 and less than 3 meters.`);
+            return;
+        }
+
+        const bmi =userWeight/(userHeight*userHeight);
+        const finalBmi=bmi.toFixed(1);
+
+        setBmiScore(finalBmi);
+
+        let bmiCategory='';
+        if (bmi<18.5){
+            bmiCategory='Underweight';
+        } else if (bmi>=18.5&&bmi<=24.9){
+            bmiCategory='Normal Weight';
+        }else if (bmi>=25.0&&bmi<=29.9){
+            bmiCategory='Overweight';
+        }else{
+            bmiCategory='Obesity';
+        }
+
+        Alert.alert("BMI Results",`Your BMI Category is ${bmiCategory} \nYour BMI is: ${bmi.toFixed(1)}`);
+    };
+    // reset 
+    const reset=()=>{
+        setHeight('');
+        setWeight('');
+        setBmiScore('--');
+    };
     return(
     // bmi description box
     <View style={styles.container}>
@@ -19,39 +66,52 @@ export default function BMI(){
     <View style={styles.calculatorContainer}>
         <View style={styles.scoreContainer}>
             <Text style={styles.scoreTitle}>BMI Score</Text>
-            <Text style={styles.score}>48</Text>
+            <Text style={styles.score}>{score}</Text>
         </View>
-    {/* height input area */}
-        <View style={styles.heightContainer}>
-            <Text style={styles.heightTitle}>Height</Text>
-            <View style ={styles.heightDimensionsContainer}>
-                <View style={styles.inputHeight}>
-                    <TextInput style={styles.feet} keyboardType="numeric" maxLength={1}></TextInput>
-                    <Text style={styles.unitLabel}>ft</Text>
-                </View>
-                <View style={styles.inputHeight}>
-                    <TextInput style={styles.inches}keyboardType="numeric" maxLength={2}></TextInput>
-                    <Text style={styles.unitLabel}>in</Text>
-                </View>    
-            </View>
-        </View>
+
     {/* weight input area */}
     <View style={styles.wbContainer}> 
     <View style={styles.weightButtonsContainer}>
         <View style={styles.weightContainer}>
             <Text style={styles.weightTitle}>Weight</Text>
-            <TextInput style={styles.weightInput} keyboardType="numeric" maxLength={3}></TextInput>
+                    <TextInput 
+                        style={styles.weightInput} 
+                        keyboardType="numeric" 
+                        maxLength={3}
+                        placeholder="--"
+                        placeholderTextColor="#888"
+                        value={weight}
+                        onChangeText={setWeight}
+
+                    />
             <Text style={styles.unitLabelWeight}>kg</Text>
 
          </View>
     </View>
-                       
-    <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.btnCalculate} ><Text style={styles.btnCalculateText}>Calculate</Text></TouchableOpacity>
-            <TouchableOpacity style={styles.btnReset}><Text style={styles.btnResetText}>Reset</Text></TouchableOpacity>
-    </View>
- </View>
+    {/* height input area */}
+        <View style={styles.heightContainer}>
+            <Text style={styles.heightTitle}>Height</Text>
+            <View style ={styles.heightDimensionsContainer}>
+                <View style={styles.inputHeight}>
+                    <TextInput 
+                        style={styles.metersInput} 
+                        keyboardType="numeric" 
+                        maxLength={4}
+                        placeholder="--"
+                        placeholderTextColor="#888"
+                        value={height}
+                        onChangeText={setHeight}
+                    />
+                    <Text style={styles.unitLabel}>m</Text>
+                </View>  
+            </View>
+        </View>          
 
+ </View>
+    <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.btnCalculate} onPress={calculateBMI}><Text style={styles.btnCalculateText}>Calculate</Text></TouchableOpacity>
+            <TouchableOpacity style={styles.btnReset} onPress={reset}><Text style={styles.btnResetText}>Reset</Text></TouchableOpacity>
+    </View>
     </View>
     </View>
     
@@ -59,13 +119,13 @@ export default function BMI(){
     
     )
 
-}
+};
 
 const styles=StyleSheet.create({
     container: {
         width:'100%',
         height:'100%',
-        backgroundColor: '#e34d57',
+        backgroundColor: '#64a856',
         alignItems:'center', 
 
     },
@@ -75,7 +135,7 @@ const styles=StyleSheet.create({
         borderRadius:10,
         display:'flex',
         flexDirection:'column',
-        backgroundColor:'#FAF9F5',
+        backgroundColor:'#fff3c2',
         padding:20,
         marginTop:50,
         borderColor:'#2F5233',
@@ -97,11 +157,11 @@ const styles=StyleSheet.create({
 
     calculatorContainer:{
         width:'85%',
-        height:'70%',
-        backgroundColor: 'rgba(110, 213, 96, 0.92)',
+        height:'60%',
+        backgroundColor: 'rgba(164, 232, 155, 0.92)',
         alignItems:'center',
         marginTop:30,
-        border:'black',
+        borderColor:'black',
         borderRadius:10,
         borderWidth:2,
     },
@@ -112,7 +172,7 @@ const styles=StyleSheet.create({
         borderRadius:10,
         display:'flex',
         flexDirection:'column',
-        backgroundColor:'rgb(244, 92, 92)',
+        backgroundColor:'rgb(254, 249, 171)',
         padding:20,
         marginTop:30,
         borderColor:'black',
@@ -134,10 +194,10 @@ const styles=StyleSheet.create({
     inputHeight:{
         position:'relative',
         width:120,
-        
+        justifyContent:'center',
     },
     heightContainer:{
-        width:300,
+        width:150,
         height:150,
         borderRadius:10,
         display:'flex',
@@ -151,7 +211,7 @@ const styles=StyleSheet.create({
     heightTitle:{
         fontFamily:'flute',
         fontSize:25,
-        textAlign:'left',
+        textAlign:'center',
     },
     
     heightDimensionsContainer:{
@@ -162,32 +222,20 @@ const styles=StyleSheet.create({
         justifyContent:'space-between',
         
     },
-    feet:{
-        width:120,
-        height:70,
-        backgroundColor: 'rgb(223, 241, 161)',
-        fontFamily:'flute',
-        textAlign:'center',
-        fontSize:35,
-        borderColor:'black',
-        borderWidth:1.2,
-        paddingRight:15,
-        borderRadius:5,
-
-    },
-    inches:{
+    metersInput:{
         width:120,
         height:70,
         backgroundColor: 'rgb(249, 255, 160)',
-        borderColor:'black',
-        borderWidth:1.2,
         fontFamily:'flute',
         textAlign:'center',
         fontSize:35,
+        borderColor:'black',
+        borderWidth:1.2,
         paddingRight:15,
         borderRadius:5,
 
     },
+
     unitLabel:{
         position:'absolute',
         right:20,
@@ -199,7 +247,7 @@ const styles=StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         justifyContent:'space-between',
-        gap:28,
+        gap:5,
     },
     weightButtonsContainer:{
 
@@ -247,7 +295,7 @@ const styles=StyleSheet.create({
     buttonContainer:{
         display:'flex',
         flexDirection:'column',
-        marginTop:43,
+        marginTop:35,
     },
     btnCalculate:{
         backgroundColor:'rgb(255, 245, 200)',
