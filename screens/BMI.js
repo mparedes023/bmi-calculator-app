@@ -207,6 +207,7 @@ const styles=StyleSheet.create({
         marginTop:30,
         borderColor:'black',
         borderWidth:1.2,
+        alignItems:'center',
     },
     heightTitle:{
         fontFamily:'flute',
@@ -233,7 +234,7 @@ const styles=StyleSheet.create({
         borderWidth:1.2,
         paddingRight:15,
         borderRadius:5,
-
+        alignItems:'center',
     },
 
     unitLabel:{
